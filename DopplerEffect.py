@@ -10,7 +10,7 @@ class wave:
         self.radius = 50
 
     def update(self):
-        pygame.draw.circle(screen, (0,0,0), self.centre, self.radius)
+        pygame.draw.circle(screen, (0,0,0), self.centre, self.radius, 1)
 
 screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Doppler test and that')
