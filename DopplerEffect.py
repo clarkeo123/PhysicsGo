@@ -1,4 +1,5 @@
 import pygame
+from pygame.gfxdraw import aacircle
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -10,7 +11,7 @@ class wave:
         self.radius = 50
 
     def update(self):
-        pygame.draw.circle(screen, (0,0,0), self.centre, self.radius, 1)
+        aacircle(screen, self.centre[0], self.centre[1], self.radius, (0,0,0))
         self.radius += 1
 
 screen = pygame.display.set_mode(resolution)
