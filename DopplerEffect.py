@@ -30,6 +30,8 @@ while running:
     
     for obj in wavelist:
         obj.update()
+        if obj.radius > 300:
+            wavelist.remove(obj)
 
     pygame.display.update()
     clock.tick(60)
