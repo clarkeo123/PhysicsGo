@@ -10,7 +10,7 @@ resolution = pygame.display.get_desktop_sizes()[0] #gets the resolution of the d
 
 class wave:
     def __init__(self):
-        self.centre = wavesource.centre #sets the fixed centre to the current mouse position
+        self.centre = wavesource.centre #sets the fixed centre to the current wave source position
         self.radius = 50
         self.opacity = 250
 
@@ -27,6 +27,7 @@ class source:
         self.speed = 0
 
     def update(self):
+        #gets keys pressed and converts them into direction values
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.direction = -90
@@ -42,7 +43,8 @@ class source:
             self.speed = sourcespeed
         else:
             self.speed = 0
-        raddirection = math.radians(self.direction)
+        raddirection = math.radians(self.direction) #converts the direction attribute into radians
+        #uses trigonometry to convert direction and distance values into x and y position changes
         self.centre = [self.centre[0]+round(math.cos(raddirection)*self.speed),self.centre[1]+round(math.sin(raddirection)*self.speed)]
         pygame.draw.circle(screen, (0,0,0), self.centre, 50)
 
@@ -51,13 +53,12 @@ class source:
 screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Doppler Effect Simulation')
 
-#array which all of the wave objects are stored in
-wavelist = []
-wavelength = 5
-wavecounter = 0
-wavespeed = 2
-sourcespeed = 5
-wavesource = source()
+wavelist = [] #array which all of the wave objects are stored in
+wavelength = 5 #determines the distance between the wavefronts
+wavecounter = 0 #keeps track of how many ticks it has been since the last wave was generated
+wavespeed = 2 #determines how quickly the waves move outward
+sourcespeed = 5 #determines how quickly the wave source moves
+wavesource = source() #instantiates the wave source
 
 #main loop
 running = True
