@@ -39,7 +39,7 @@ while running:
     screen.fill((255,255,255))
 
     #creates a new wave object every set number of ticks
-    if wavecounter == 5:
+    if wavecounter == wavelength:
         wavelist.append(wave())
         wavecounter = 0
     else:
