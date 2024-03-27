@@ -25,6 +25,8 @@ pygame.display.set_caption('Doppler Effect Simulation')
 
 #array which all of the wave objects are stored in
 wavelist = []
+wavelength = 5
+wavecounter = 0
 
 #main loop
 running = True
@@ -36,7 +38,12 @@ while running:
 
     screen.fill((255,255,255))
 
-    wavelist.append(wave()) #creates a new wave object every tick
+    #creates a new wave object every set number of ticks
+    if wavecounter == 5:
+        wavelist.append(wave())
+        wavecounter = 0
+    else:
+        wavecounter += 1
     
     #checks each item in the wave object array
     for obj in wavelist:
