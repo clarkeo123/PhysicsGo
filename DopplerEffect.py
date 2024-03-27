@@ -16,8 +16,8 @@ class wave:
     def update(self):
         aacircle(screen, self.centre[0], self.centre[1], self.radius, (0,0,0,self.opacity)) #draws a circle to represent the wave
         #increases the radius of the circle each tick and decreases its opacity
-        self.radius += 1
-        self.opacity -= 1
+        self.radius += wavespeed
+        self.opacity -= wavespeed
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
@@ -27,6 +27,7 @@ pygame.display.set_caption('Doppler Effect Simulation')
 wavelist = []
 wavelength = 5
 wavecounter = 0
+wavespeed = 2
 
 #main loop
 running = True
