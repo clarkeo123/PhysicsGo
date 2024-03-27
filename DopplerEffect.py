@@ -1,6 +1,7 @@
 #modules
 import pygame
 from pygame.gfxdraw import aacircle
+import math
 
 #initialises the pygame window and creates the fps clock
 pygame.init()
@@ -19,6 +20,33 @@ class wave:
         self.radius += wavespeed
         self.opacity -= wavespeed
 
+class source:
+    def __init__(self):
+        self.centre = [resolution[0]//2,resolution[1]//2]
+        self.direction = 0
+        self.speed = 0
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.direction = 0
+            self.speed = sourcespeed
+        elif keys[pygame.K_DOWN]:
+            self.direction = 180
+            self.speed = sourcespeed
+        elif keys[pygame.K_LEFT]:
+            self.direction = -90
+            self.speed = sourcespeed
+        elif keys[pygame.K_RIGHT]:
+            self.direction = 90
+            self.speed = sourcespeed
+        else:
+            self.speed = 0
+        raddirection = math.radians(self.direction)
+        self.centre = [self.centre[0]+(math.cos(raddirection)*self.speed),self.centre[1]+(math.sin(raddirection)*self.speed)]
+        pygame.draw.circle(screen, (0,0,0), self.centre, 50)
+
+
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Doppler Effect Simulation')
@@ -28,6 +56,8 @@ wavelist = []
 wavelength = 5
 wavecounter = 0
 wavespeed = 2
+sourcespeed = 5
+wavesource = source()
 
 #main loop
 running = True
@@ -38,6 +68,8 @@ while running:
             running = False
 
     screen.fill((255,255,255))
+
+    wavesource.update()
 
     #creates a new wave object every set number of ticks
     if wavecounter == wavelength:
