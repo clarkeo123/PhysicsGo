@@ -58,6 +58,14 @@ class source:
         raddirection = math.radians(self.direction) #converts the direction attribute into radians
         #uses trigonometry to convert direction and distance values into x and y position changes
         self.centre = [self.centre[0]+round(math.cos(raddirection)*self.speed),self.centre[1]+round(math.sin(raddirection)*self.speed)]
+        if self.centre[0] > resolution[0]:
+            self.centre[0] = resolution[0]
+        elif self.centre [0] < 0:
+            self.centre[0] = 0
+        if self.centre[1] > resolution[1]:
+            self.centre[1] = resolution[1]
+        elif self.centre [1] < 0:
+            self.centre[1] = 0
         pygame.draw.circle(screen, (0,0,0), self.centre, 50)
 
 
