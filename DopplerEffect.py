@@ -29,7 +29,19 @@ class source:
     def update(self):
         #gets keys pressed and converts them into direction values
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
+            self.direction = -45
+            self.speed = sourcespeed
+        elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
+            self.direction = 45
+            self.speed = sourcespeed
+        elif keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
+            self.direction = 135
+            self.speed = sourcespeed
+        elif keys[pygame.K_LEFT] and keys[pygame.K_UP]:
+            self.direction = -135
+            self.speed = sourcespeed
+        elif keys[pygame.K_UP]:
             self.direction = -90
             self.speed = sourcespeed
         elif keys[pygame.K_DOWN]:
