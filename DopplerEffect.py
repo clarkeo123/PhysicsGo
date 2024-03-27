@@ -58,6 +58,7 @@ class source:
         raddirection = math.radians(self.direction) #converts the direction attribute into radians
         #uses trigonometry to convert direction and distance values into x and y position changes
         self.centre = [self.centre[0]+round(math.cos(raddirection)*self.speed),self.centre[1]+round(math.sin(raddirection)*self.speed)]
+        #checks if the wavesource is outside of the screen and moves it back to the border if it is
         if self.centre[0] > resolution[0]:
             self.centre[0] = resolution[0]
         elif self.centre [0] < 0:
