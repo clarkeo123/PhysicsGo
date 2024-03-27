@@ -10,7 +10,7 @@ resolution = pygame.display.get_desktop_sizes()[0] #gets the resolution of the d
 
 class wave:
     def __init__(self):
-        self.centre = pygame.mouse.get_pos() #sets the fixed centre to the current mouse position
+        self.centre = wavesource.centre #sets the fixed centre to the current mouse position
         self.radius = 50
         self.opacity = 250
 
@@ -29,21 +29,21 @@ class source:
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            self.direction = 0
-            self.speed = sourcespeed
-        elif keys[pygame.K_DOWN]:
-            self.direction = 180
-            self.speed = sourcespeed
-        elif keys[pygame.K_LEFT]:
             self.direction = -90
             self.speed = sourcespeed
-        elif keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_DOWN]:
             self.direction = 90
+            self.speed = sourcespeed
+        elif keys[pygame.K_LEFT]:
+            self.direction = 180
+            self.speed = sourcespeed
+        elif keys[pygame.K_RIGHT]:
+            self.direction = 0
             self.speed = sourcespeed
         else:
             self.speed = 0
         raddirection = math.radians(self.direction)
-        self.centre = [self.centre[0]+(math.cos(raddirection)*self.speed),self.centre[1]+(math.sin(raddirection)*self.speed)]
+        self.centre = [self.centre[0]+round(math.cos(raddirection)*self.speed),self.centre[1]+round(math.sin(raddirection)*self.speed)]
         pygame.draw.circle(screen, (0,0,0), self.centre, 50)
 
 
