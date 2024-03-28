@@ -116,6 +116,11 @@ while running:
     
     wavelengthslider.update()
 
+    if wavelengthslider.hovered:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
     wavesource.update()
 
     #creates a new wave object every set number of ticks
