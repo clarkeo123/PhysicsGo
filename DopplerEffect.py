@@ -103,7 +103,9 @@ wavecounter = 0 #keeps track of how many ticks it has been since the last wave w
 wavespeed = 2 #determines how quickly the waves move outward
 sourcespeed = 5 #determines how quickly the wave source moves
 wavesource = source() #instantiates the wave source
-wavelengthslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 10) #instantiates the slider which controls wavelength
+wavelengthslider = slider(500,resolution[0]-500, resolution[1]-150, 1, 10) #instantiates the slider which controls wavelength
+wavespeedslider = slider(500,resolution[0]-500, resolution[1]-300, 1, 5) #instantiates the slider which controls wave speed
+sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-450, 1, 10) #instantiates the slider which controls source speed
 
 #main loop
 running = True
@@ -114,10 +116,14 @@ while running:
             running = False
 
     screen.fill((255,255,255))
-    
-    wavelength = wavelengthslider.update()
 
-    if wavelengthslider.hovered:
+    #updates all of the sliders    
+    wavelength = wavelengthslider.update()
+    wavespeed = wavespeedslider.update()
+    sourcespeed = sourcespeedslider.update()
+
+    #checks if sliders are being hovered over and changes the cursor to a hand if they are
+    if wavelengthslider.hovered or wavespeedslider.hovered or sourcespeedslider.hovered:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
     else:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
