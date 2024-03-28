@@ -91,6 +91,7 @@ class slider:
             self.sliderx = self.startx
         elif self.sliderx > self.endx:
             self.sliderx = self.endx
+        return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
@@ -114,7 +115,7 @@ while running:
 
     screen.fill((255,255,255))
     
-    wavelengthslider.update()
+    wavelength = wavelengthslider.update()
 
     if wavelengthslider.hovered:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
