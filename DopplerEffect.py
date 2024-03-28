@@ -63,6 +63,34 @@ class source:
             self.centre[1] = 0
         pygame.draw.circle(screen, (0,0,0), self.centre, 50)
 
+class slider:
+    def __init__(self, startx, endx, height, startvalue, endvalue):
+        self.startx = startx
+        self.endx = endx
+        self.height = height
+        self.startvalue = startvalue
+        self.endvalue = endvalue
+        self.sliderx = resolution[0]//2
+        self.hovered = False
+        self.clicked = False
+
+    def update(self):
+        pygame.draw.line(screen, (0,0,0), [self.startx,self.height], [self.endx,self.height], 10)
+        slider = pygame.draw.circle(screen, (0,0,0), [self.sliderx,self.height], 25)
+        if slider.collidepoint(pygame.mouse.get_pos()):
+            self.hovered = True
+        else:
+            self.hovered = False
+        if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
+            self.clicked = True
+        if pygame.mouse.get_pressed(num_buttons=3)[0] == False:
+            self.clicked = False
+        if self.clicked:
+            self.sliderx = pygame.mouse.get_pos()[0]
+        if self.sliderx < self.startx:
+            self.sliderx = self.startx
+        elif self.sliderx > self.endx:
+            self.sliderx = self.endx
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
@@ -74,6 +102,7 @@ wavecounter = 0 #keeps track of how many ticks it has been since the last wave w
 wavespeed = 2 #determines how quickly the waves move outward
 sourcespeed = 5 #determines how quickly the wave source moves
 wavesource = source() #instantiates the wave source
+wavelengthslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 10) #instantiates the slider which controls wavelength
 
 #main loop
 running = True
@@ -84,6 +113,8 @@ while running:
             running = False
 
     screen.fill((255,255,255))
+    
+    wavelengthslider.update()
 
     wavesource.update()
 
