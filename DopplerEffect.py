@@ -125,7 +125,7 @@ while running:
     wavesource.update()
 
     #creates a new wave object every set number of ticks
-    if wavecounter == wavelength:
+    if wavecounter >= wavelength:
         wavelist.append(wave())
         wavecounter = 0
     else:
