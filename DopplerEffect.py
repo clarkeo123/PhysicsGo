@@ -31,27 +31,21 @@ class source:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
             self.direction = -45
-            self.speed = sourcespeed
         elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
             self.direction = 45
-            self.speed = sourcespeed
         elif keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
             self.direction = 135
-            self.speed = sourcespeed
         elif keys[pygame.K_LEFT] and keys[pygame.K_UP]:
             self.direction = -135
-            self.speed = sourcespeed
         elif keys[pygame.K_UP]:
             self.direction = -90
-            self.speed = sourcespeed
         elif keys[pygame.K_DOWN]:
             self.direction = 90
-            self.speed = sourcespeed
         elif keys[pygame.K_LEFT]:
             self.direction = 180
-            self.speed = sourcespeed
         elif keys[pygame.K_RIGHT]:
             self.direction = 0
+        if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
             self.speed = sourcespeed
         else:
             self.speed = 0
