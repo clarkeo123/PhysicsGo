@@ -92,6 +92,12 @@ class slider:
         elif self.sliderx > self.endx:
             self.sliderx = self.endx
         return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
+    
+def writetext(text,size,x,y):
+    font = pygame.font.Font('freesansbold.ttf', size) #sets the font which the text will be rendered in
+    textRect = font.render(text, True, (0,0,0)).get_rect() #creates an image of the text input
+    textRect.center = (x, y) #sets the centre of the image to specified coordinates
+    screen.blit(font.render(text, True, (0,0,0)), textRect) #displays the text on the screen
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
@@ -103,9 +109,9 @@ wavecounter = 0 #keeps track of how many ticks it has been since the last wave w
 wavespeed = 2 #determines how quickly the waves move outward
 sourcespeed = 5 #determines how quickly the wave source moves
 wavesource = source() #instantiates the wave source
-wavelengthslider = slider(500,resolution[0]-500, resolution[1]-150, 1, 10) #instantiates the slider which controls wavelength
-wavespeedslider = slider(500,resolution[0]-500, resolution[1]-300, 1, 5) #instantiates the slider which controls wave speed
-sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-450, 1, 10) #instantiates the slider which controls source speed
+wavelengthslider = slider(500,resolution[0]-500, resolution[1]-100, 1, 10) #instantiates the slider which controls wavelength
+wavespeedslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 5) #instantiates the slider which controls wave speed
+sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-400, 1, 10) #instantiates the slider which controls source speed
 
 #main loop
 running = True
@@ -121,6 +127,11 @@ while running:
     wavelength = wavelengthslider.update()
     wavespeed = wavespeedslider.update()
     sourcespeed = sourcespeedslider.update()
+
+    #writes the labels for each slider
+    writetext("Wavelength",32,resolution[0]//2,resolution[1]-175)
+    writetext("Wave Speed",32,resolution[0]//2,resolution[1]-325)
+    writetext("Source Speed",32,resolution[0]//2,resolution[1]-475)
 
     #checks if sliders are being hovered over and changes the cursor to a hand if they are
     if wavelengthslider.hovered or wavespeedslider.hovered or sourcespeedslider.hovered:
