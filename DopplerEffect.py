@@ -61,36 +61,44 @@ class source:
             self.centre[1] = resolution[1]
         elif self.centre [1] < 0:
             self.centre[1] = 0
+        #displays the wave source
         pygame.draw.circle(screen, (0,0,0), self.centre, 50)
 
 class slider:
     def __init__(self, startx, endx, height, startvalue, endvalue):
-        self.startx = startx
-        self.endx = endx
-        self.height = height
-        self.startvalue = startvalue
-        self.endvalue = endvalue
-        self.sliderx = resolution[0]//2
-        self.hovered = False
-        self.clicked = False
+        #sets all of the initial attributes of the slider
+        self.startx = startx #sets where the slider line starts
+        self.endx = endx #sets where the slider line ends
+        self.height = height #sets what the height of the slider is on the screen
+        self.startvalue = startvalue #sets what value the slider should start at
+        self.endvalue = endvalue #sets what value the slider should end at
+        self.sliderx = resolution[0]//2 #sets the current position of the slider on the line
+        self.hovered = False #shows if the slider is being hovered over by the mouse
+        self.clicked = False #shows if the slider is being clicked on by the mouse
 
     def update(self):
+        #draws the line and circle which make up the slider
         pygame.draw.line(screen, (0,0,0), [self.startx,self.height], [self.endx,self.height], 10)
         slider = pygame.draw.circle(screen, (0,0,0), [self.sliderx,self.height], 25)
+        #checks if the slider is being hovered over by the mouse
         if slider.collidepoint(pygame.mouse.get_pos()):
             self.hovered = True
         else:
             self.hovered = False
+        #checks if the slider is being cliicked on by the mouse
         if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
             self.clicked = True
-        if pygame.mouse.get_pressed(num_buttons=3)[0] == False:
+        elif pygame.mouse.get_pressed(num_buttons=3)[0] == False:
             self.clicked = False
+        #makes the slider move with the mouse if it is being clicked on
         if self.clicked:
             self.sliderx = pygame.mouse.get_pos()[0]
+        #stops the slider from going off the line
         if self.sliderx < self.startx:
             self.sliderx = self.startx
         elif self.sliderx > self.endx:
             self.sliderx = self.endx
+        #calculates the value which the slider is on based on its position, length and chosen start and end values
         return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
     
 def writetext(text,size,x,y):
@@ -129,9 +137,9 @@ while running:
     sourcespeed = sourcespeedslider.update()
 
     #writes the labels for each slider
-    writetext("Wavelength",32,resolution[0]//2,resolution[1]-175)
-    writetext("Wave Speed",32,resolution[0]//2,resolution[1]-325)
-    writetext("Source Speed",32,resolution[0]//2,resolution[1]-475)
+    writetext(f"Wavelength: {wavelength}",32,resolution[0]//2,resolution[1]-175)
+    writetext(f"Wave Speed: {wavespeed}",32,resolution[0]//2,resolution[1]-325)
+    writetext(f"Source Speed: {sourcespeed}",32,resolution[0]//2,resolution[1]-475)
 
     #checks if sliders are being hovered over and changes the cursor to a hand if they are
     if wavelengthslider.hovered or wavespeedslider.hovered or sourcespeedslider.hovered:
