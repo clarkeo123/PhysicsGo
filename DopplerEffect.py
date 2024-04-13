@@ -67,14 +67,14 @@ class source:
 class slider:
     def __init__(self, startx, endx, height, startvalue, endvalue):
         #sets all of the initial attributes of the slider
-        self.startx = startx #sets where the slider line starts
-        self.endx = endx #sets where the slider line ends
-        self.height = height #sets what the height of the slider is on the screen
-        self.startvalue = startvalue #sets what value the slider should start at
-        self.endvalue = endvalue #sets what value the slider should end at
-        self.sliderx = resolution[0]//2 #sets the current position of the slider on the line
-        self.hovered = False #shows if the slider is being hovered over by the mouse
-        self.clicked = False #shows if the slider is being clicked on by the mouse
+        self.startx = startx
+        self.endx = endx
+        self.height = height
+        self.startvalue = startvalue
+        self.endvalue = endvalue
+        self.sliderx = resolution[0]//2
+        self.hovered = False
+        self.clicked = False
 
     def update(self):
         #draws the line and circle which make up the slider
@@ -102,24 +102,27 @@ class slider:
         return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
     
 def writetext(text,size,x,y):
-    font = pygame.font.Font('freesansbold.ttf', size) #sets the font which the text will be rendered in
-    textRect = font.render(text, True, (0,0,0)).get_rect() #creates an image of the text input
-    textRect.center = (x, y) #sets the centre of the image to specified coordinates
-    screen.blit(font.render(text, True, (0,0,0)), textRect) #displays the text on the screen
+    #takes a text input and position and size arguments to render text on the screen
+    font = pygame.font.Font('freesansbold.ttf', size)
+    textRect = font.render(text, True, (0,0,0)).get_rect()
+    textRect.center = (x, y)
+    screen.blit(font.render(text, True, (0,0,0)), textRect)
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Doppler Effect Simulation')
 
 wavelist = [] #array which all of the wave objects are stored in
-wavelength = 5 #determines the distance between the wavefronts
-wavecounter = 0 #keeps track of how many ticks it has been since the last wave was generated
-wavespeed = 2 #determines how quickly the waves move outward
-sourcespeed = 5 #determines how quickly the wave source moves
+#sets the initial values of wave properties
+wavelength = 5
+wavecounter = 0
+wavespeed = 2
+sourcespeed = 5
 wavesource = source() #instantiates the wave source
-wavelengthslider = slider(500,resolution[0]-500, resolution[1]-100, 1, 10) #instantiates the slider which controls wavelength
-wavespeedslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 5) #instantiates the slider which controls wave speed
-sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-400, 1, 10) #instantiates the slider which controls source speed
+#instantiates the sliders which control wave properties
+wavelengthslider = slider(500,resolution[0]-500, resolution[1]-100, 1, 10)
+wavespeedslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 5)
+sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-400, 1, 10)
 
 #main loop
 running = True
