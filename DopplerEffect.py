@@ -101,6 +101,19 @@ class slider:
         #calculates the value which the slider is on based on its position, length and chosen start and end values
         return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
     
+class exitbutton:
+    def __init__(self):
+        self.hovered = False
+
+    def update(self):
+        writetext("X",50,resolution[0]-50,50)
+        if pygame.mouse.get_pos()[0] > resolution[0]-100 and pygame.mouse.get_pos()[1] < 100:
+            self.hovered = True
+        else:
+            self.hovered = False
+        if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
+            quit()
+    
 def writetext(text,size,x,y):
     #takes a text input and position and size arguments to render text on the screen
     font = pygame.font.Font('freesansbold.ttf', size)
@@ -123,6 +136,8 @@ wavesource = source() #instantiates the wave source
 wavelengthslider = slider(500,resolution[0]-500, resolution[1]-100, 1, 10)
 wavespeedslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 5)
 sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-400, 1, 10)
+#instantiates the exit button
+button = exitbutton()
 
 #main loop
 running = True
@@ -145,12 +160,13 @@ while running:
     writetext(f"Source Speed: {sourcespeed}",32,resolution[0]//2,resolution[1]-475)
 
     #checks if sliders are being hovered over and changes the cursor to a hand if they are
-    if wavelengthslider.hovered or wavespeedslider.hovered or sourcespeedslider.hovered:
+    if wavelengthslider.hovered or wavespeedslider.hovered or sourcespeedslider.hovered or button.hovered:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
     else:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     wavesource.update()
+    button.update()
 
     #creates a new wave object every set number of ticks
     if wavecounter >= wavelength:
