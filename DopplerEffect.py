@@ -25,6 +25,7 @@ class source:
         self.centre = [resolution[0]//2,resolution[1]//2]
         self.direction = 0
         self.speed = 0
+        self.circlerad = resolution[1]//29
 
     def update(self):
         #gets keys pressed and converts them into direction values
@@ -62,7 +63,7 @@ class source:
         elif self.centre [1] < 0:
             self.centre[1] = 0
         #displays the wave source
-        pygame.draw.circle(screen, (0,0,0), self.centre, 50)
+        pygame.draw.circle(screen, (0,0,0), self.centre, self.circlerad)
 
 class slider:
     def __init__(self, startx, endx, height, startvalue, endvalue):
@@ -75,11 +76,13 @@ class slider:
         self.sliderx = resolution[0]//2
         self.hovered = False
         self.clicked = False
+        self.slidersize = (resolution[1]//58)
+        self.linesize = resolution[1]//120
 
     def update(self):
         #draws the line and circle which make up the slider
-        pygame.draw.line(screen, (0,0,0), [self.startx,self.height], [self.endx,self.height], 10)
-        slider = pygame.draw.circle(screen, (0,0,0), [self.sliderx,self.height], 25)
+        pygame.draw.line(screen, (0,0,0), [self.startx,self.height], [self.endx,self.height], self.linesize)
+        slider = pygame.draw.circle(screen, (0,0,0), [self.sliderx,self.height], self.slidersize)
         #checks if the slider is being hovered over by the mouse
         if slider.collidepoint(pygame.mouse.get_pos()):
             self.hovered = True
@@ -104,15 +107,22 @@ class slider:
 class exitbutton:
     def __init__(self):
         self.hovered = False
+        self.xpos = resolution[0]-(resolution[0]//26)
+        self.ypos = resolution[1]//14
+        self.fontsize = 50
+        self.writex = resolution[0]-(resolution[0]//50)
+        self.writey = resolution[0]//50
 
     def update(self):
-        writetext("X",50,resolution[0]-50,50)
-        if pygame.mouse.get_pos()[0] > resolution[0]-100 and pygame.mouse.get_pos()[1] < 100:
+        writetext("X",self.fontsize,self.writex,self.writey)
+        mousepos = pygame.mouse.get_pos()
+        if mousepos[0] > self.xpos and mousepos[1] < self.ypos:
             self.hovered = True
         else:
             self.hovered = False
         if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
-            quit()
+            return False
+        return True
     
 def writetext(text,size,x,y):
     #takes a text input and position and size arguments to render text on the screen
@@ -133,11 +143,15 @@ wavespeed = 2
 sourcespeed = 5
 wavesource = source() #instantiates the wave source
 #instantiates the sliders which control wave properties
-wavelengthslider = slider(500,resolution[0]-500, resolution[1]-100, 1, 10)
-wavespeedslider = slider(500,resolution[0]-500, resolution[1]-250, 1, 5)
-sourcespeedslider = slider(500,resolution[0]-500, resolution[1]-400, 1, 10)
+wavelengthslider = slider(resolution[0]//5,resolution[0]-(resolution[0]//5), resolution[1]-((resolution[1]//58)*4), 1, 10)
+wavespeedslider = slider(resolution[0]//5,resolution[0]-(resolution[0]//5), resolution[1]-((resolution[1]//58)*10), 1, 5)
+sourcespeedslider = slider(resolution[0]//5,resolution[0]-(resolution[0]//5), resolution[1]-((resolution[1]//58)*16), 1, 10)
 #instantiates the exit button
 button = exitbutton()
+centrex = resolution[0]//2
+text1y = resolution[1]-((resolution[1]//58)*7)
+text2y = resolution[1]-((resolution[1]//58)*13)
+text3y = resolution[1]-((resolution[1]//58)*19)
 
 #main loop
 running = True
@@ -155,9 +169,9 @@ while running:
     sourcespeed = sourcespeedslider.update()
 
     #writes the labels for each slider
-    writetext(f"Wavelength: {wavelength}",32,resolution[0]//2,resolution[1]-175)
-    writetext(f"Wave Speed: {wavespeed}",32,resolution[0]//2,resolution[1]-325)
-    writetext(f"Source Speed: {sourcespeed}",32,resolution[0]//2,resolution[1]-475)
+    writetext(f"Wavelength: {wavelength}",32,centrex,text1y)
+    writetext(f"Wave Speed: {wavespeed}",32,centrex,text2y)
+    writetext(f"Source Speed: {sourcespeed}",32,centrex,text3y)
 
     #checks if sliders are being hovered over and changes the cursor to a hand if they are
     if wavelengthslider.hovered or wavespeedslider.hovered or sourcespeedslider.hovered or button.hovered:
@@ -166,7 +180,7 @@ while running:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     wavesource.update()
-    button.update()
+    running = button.update()
 
     #creates a new wave object every set number of ticks
     if wavecounter >= wavelength:
@@ -187,3 +201,4 @@ while running:
     #updates the screen and ticks the fps clock at 60 frames per second
     pygame.display.update()
     clock.tick(60)
+quit()
