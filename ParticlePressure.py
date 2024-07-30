@@ -19,6 +19,7 @@ class particle:
 
     def update(self):
         #checks for collisions with the edge of the box
+        self.speed = particlespeed
         if self.centre[1] < container.rect.top + self.radius or self.centre[1] > container.rect.bottom - self.radius or self.centre[0] > container.rect.right - self.radius or self.centre[0] < container.rect.left + self.radius:
             value = 1
         else:
@@ -72,7 +73,7 @@ class exitbutton:
 class box:
     def __init__(self):
         self.rect = pygame.Rect(resolution[0]//10,resolution[1]//10,resolution[0]//(10/8),resolution[1]//(10/8))
-        self.cornerpos = [resolution[0]//(10/9),resolution[1]//(10/9)]
+        self.cornerpos = [resolution[0]//(10/9),resolution[1]//(10/8)]
         self.hovered = False
         self.clicked = False
 
@@ -95,6 +96,45 @@ class box:
         self.rect.height = max(self.cornerpos[1] - self.rect.top,20)
         pygame.draw.rect(screen,(0,0,0),self.rect,10,10)
     
+class slider:
+    def __init__(self, startx, endx, height, startvalue, endvalue):
+        #sets all of the initial attributes of the slider
+        self.startx = startx
+        self.endx = endx
+        self.height = height
+        self.startvalue = startvalue
+        self.endvalue = endvalue
+        self.sliderx = resolution[0]//2
+        self.hovered = False
+        self.clicked = False
+        self.slidersize = (resolution[1]//58)
+        self.linesize = resolution[1]//120
+
+    def update(self):
+        #draws the line and circle which make up the slider
+        pygame.draw.line(screen, (0,0,0), [self.startx,self.height], [self.endx,self.height], self.linesize)
+        slider = pygame.draw.circle(screen, (0,0,0), [self.sliderx,self.height], self.slidersize)
+        #checks if the slider is being hovered over by the mouse
+        if slider.collidepoint(pygame.mouse.get_pos()):
+            self.hovered = True
+        else:
+            self.hovered = False
+        #checks if the slider is being cliicked on by the mouse
+        if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
+            self.clicked = True
+        elif pygame.mouse.get_pressed(num_buttons=3)[0] == False:
+            self.clicked = False
+        #makes the slider move with the mouse if it is being clicked on
+        if self.clicked:
+            self.sliderx = pygame.mouse.get_pos()[0]
+        #stops the slider from going off the line
+        if self.sliderx < self.startx:
+            self.sliderx = self.startx
+        elif self.sliderx > self.endx:
+            self.sliderx = self.endx
+        #calculates the value which the slider is on based on its position, length and chosen start and end values
+        return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
+
 def writetext(text,size,x,y):
     #takes a text input and position and size arguments to render text on the screen
     font = pygame.font.Font('freesansbold.ttf', size)
@@ -114,6 +154,8 @@ for i in range(100):
 collisioncounter = 0
 collisiondisplay = 0
 n = 0
+speedslider = slider(resolution[0]//10,resolution[0]//(10/9),resolution[1]//(20/19),1,10)
+particlespeed = 10
 
 #main loop
 running = True
@@ -149,9 +191,10 @@ while running:
     n += 1
 
     writetext(f"Pressure: {collisiondisplay}", 50, resolution[0]//2, resolution[1]//20)
+    writetext(f"Particle Speed: {particlespeed}", 32, resolution[0]//2, resolution[1]//(10/9))
 
     container.update()
-
+    particlespeed = speedslider.update()
     running = button.update()
 
     pygame.display.update()
