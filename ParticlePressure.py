@@ -81,8 +81,8 @@ class box:
         #makes the slider move with the mouse if it is being clicked on
         if self.clicked:
             self.cornerpos = pygame.mouse.get_pos()
-        self.rect.width = self.cornerpos[0] - self.rect.left
-        self.rect.height = self.cornerpos[1] - self.rect.top
+        self.rect.width = max(self.cornerpos[0] - self.rect.left,20)
+        self.rect.height = max(self.cornerpos[1] - self.rect.top,20)
         pygame.draw.rect(screen,(0,0,0),self.rect,10,10)
     
 def writetext(text,size,x,y):
