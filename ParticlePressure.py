@@ -8,6 +8,18 @@ pygame.init()
 clock = pygame.time.Clock()
 resolution = pygame.display.get_desktop_sizes()[0] #gets the resolution of the display
 
+class particle:
+    def __init__(self):
+        self.speed = 10
+        self.direction = math.radians(random.randint(-180,180))
+        self.centre = [random.randint(0,resolution[0]),random.randint(0,resolution[1])]
+        self.radius = 10
+
+    def update(self):
+        self.centre[0] += round(math.cos(self.direction)*self.speed)
+        self.centre[1] -= round(math.sin(self.direction)*self.speed)
+        pygame.draw.circle(screen, (0,0,0), self.centre, self.radius)
+
 class exitbutton:
     def __init__(self):
         self.hovered = False
@@ -40,6 +52,7 @@ screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Particle Pressure Simulation')
 
 button = exitbutton()
+ball = particle()
 
 #main loop
 running = True
@@ -50,6 +63,8 @@ while running:
             running = False
 
     screen.fill((255,255,255))
+
+    ball.update()
 
     running = button.update()
 
