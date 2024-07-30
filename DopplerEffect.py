@@ -11,8 +11,8 @@ resolution = pygame.display.get_desktop_sizes()[0] #gets the resolution of the d
 class wave:
     def __init__(self):
         self.centre = wavesource.centre #sets the fixed centre to the current wave source position
-        self.radius = 50
-        self.opacity = 250
+        self.radius = resolution[1]//29
+        self.opacity = 255
 
     def update(self):
         aacircle(screen, self.centre[0], self.centre[1], self.radius, (0,0,0,self.opacity)) #draws a circle to represent the wave
@@ -153,6 +153,8 @@ text1y = resolution[1]-((resolution[1]//58)*7)
 text2y = resolution[1]-((resolution[1]//58)*13)
 text3y = resolution[1]-((resolution[1]//58)*19)
 
+endvalue = resolution[1]//29+255
+
 #main loop
 running = True
 while running:
@@ -192,7 +194,7 @@ while running:
     #checks each item in the wave object array
     for obj in wavelist:
         #if the wave is too large it is removed from the array
-        if obj.radius > 300:
+        if obj.radius > endvalue:
             wavelist.remove(obj)
         #otherwise it is drawn and its attributes are updated
         else:
