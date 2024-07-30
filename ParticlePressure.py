@@ -15,6 +15,7 @@ class particle:
         self.direction = math.radians(random.randint(-180,180))
         self.centre = [random.randint(container.rect.left,container.rect.right),random.randint(container.rect.top,container.rect.bottom)]
         self.radius = 10
+        self.hitbox = pygame.Rect(self.centre[0]-self.radius,self.centre[1]-self.radius,self.radius*2,self.radius*2)
 
     def update(self):
         #checks for collisions with the edge of the box
@@ -33,7 +34,11 @@ class particle:
         #changes the particles position based on its speed and direction
         self.centre[0] += math.cos(self.direction)*self.speed
         self.centre[1] -= math.sin(self.direction)*self.speed
+        self.hitbox = pygame.Rect(self.centre[0]-self.radius,self.centre[1]-self.radius,self.radius*2,self.radius*2)
         pygame.draw.circle(screen, (0,0,0), self.centre, self.radius)
+
+    def rect(self):
+        return self.hitbox
 
 class exitbutton:
     def __init__(self):
@@ -112,8 +117,10 @@ while running:
 
     screen.fill((255,255,255))
 
-    for obj in objectlist:
-        obj.update()
+    for i in range(100):
+        objectlist[i].update()
+        if len(objectlist[i].hitbox.collidelistall(objectlist)) > 1:
+            objectlist[i].direction = math.radians(random.randint(-180,180))
 
     container.update()
 
