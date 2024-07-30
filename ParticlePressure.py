@@ -12,22 +12,22 @@ class particle:
     def __init__(self):
         self.speed = 10
         self.direction = math.radians(random.randint(-180,180))
-        self.centre = [random.randint(0,resolution[0]),random.randint(0,resolution[1])]
+        self.centre = [random.randint(container.rect.left,container.rect.right),random.randint(container.rect.top,container.rect.bottom)]
         self.radius = 10
 
     def update(self):
-        if self.centre[1] < self.radius:
+        if self.centre[1] < container.rect.top + self.radius:
             self.direction = 0-self.direction
-            self.centre[1] = self.radius
-        if self.centre[1] > resolution[1] - self.radius:
+            self.centre[1] = container.rect.top + self.radius
+        if self.centre[1] > container.rect.bottom - self.radius:
             self.direction = 0-self.direction
-            self.centre[1] = resolution[1] - self.radius
-        if self.centre[0] > resolution[0] - self.radius:
+            self.centre[1] = container.rect.bottom - self.radius
+        if self.centre[0] > container.rect.right - self.radius:
             self.direction = math.pi - self.direction
-            self.centre[0] = resolution[0] - self.radius
-        if self.centre[0] < self.radius:
+            self.centre[0] = container.rect.right - self.radius
+        if self.centre[0] < container.rect.left + self.radius:
             self.direction = math.pi -self.direction
-            self.centre[0] = self.radius
+            self.centre[0] = container.rect.left + self.radius
         self.centre[0] += math.cos(self.direction)*self.speed
         self.centre[1] -= math.sin(self.direction)*self.speed
         pygame.draw.circle(screen, (0,0,0), self.centre, self.radius)
@@ -52,6 +52,13 @@ class exitbutton:
             return False
         return True
     
+class box:
+    def __init__(self):
+        self.rect = pygame.Rect(resolution[0]//10,resolution[1]//10,resolution[0]//2,resolution[1]//2)
+
+    def update(self):
+        pygame.draw.rect(screen,(0,0,0),self.rect,10,5)
+    
 def writetext(text,size,x,y):
     #takes a text input and position and size arguments to render text on the screen
     font = pygame.font.Font('freesansbold.ttf', size)
@@ -64,6 +71,7 @@ screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Particle Pressure Simulation')
 
 button = exitbutton()
+container = box()
 objectlist = []
 for i in range(100):
     objectlist.append(particle())
@@ -80,6 +88,8 @@ while running:
 
     for obj in objectlist:
         obj.update()
+
+    container.update()
 
     running = button.update()
 
