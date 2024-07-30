@@ -19,6 +19,10 @@ class particle:
 
     def update(self):
         #checks for collisions with the edge of the box
+        if self.centre[1] < container.rect.top + self.radius or self.centre[1] > container.rect.bottom - self.radius or self.centre[0] > container.rect.right - self.radius or self.centre[0] < container.rect.left + self.radius:
+            value = 1
+        else:
+            value = 0
         if self.centre[1] < container.rect.top + self.radius:
             self.direction = 0-self.direction
             self.centre[1] = container.rect.top + self.radius
@@ -36,6 +40,7 @@ class particle:
         self.centre[1] -= math.sin(self.direction)*self.speed
         self.hitbox = pygame.Rect(self.centre[0]-self.radius,self.centre[1]-self.radius,self.radius*2,self.radius*2)
         pygame.draw.circle(screen, (0,0,0), self.centre, self.radius)
+        return value
 
     def rect(self):
         return self.hitbox
@@ -106,6 +111,9 @@ container = box()
 objectlist = []
 for i in range(100):
     objectlist.append(particle())
+collisioncounter = 0
+collisiondisplay = 0
+n = 0
 
 #main loop
 running = True
@@ -118,6 +126,7 @@ while running:
     screen.fill((255,255,255))
 
     for i in range(100):
+        collisioncounter += objectlist[i].update()
         collisionlist = objectlist[i].hitbox.collidelistall(objectlist)
         if len(collisionlist) > 1:
             if objectlist[i].hitbox.top > objectlist[collisionlist[1]].hitbox.top and objectlist[i].hitbox.left > objectlist[collisionlist[1]].hitbox.left:
@@ -135,6 +144,11 @@ while running:
             else:
                 pass
                 
+    if n % 60 == 0:
+        collisiondisplay, collisioncounter = collisioncounter, 0
+    n += 1
+
+    writetext(f"Pressure: {collisiondisplay}", 50, resolution[0]//2, resolution[1]//20)
 
     container.update()
 
