@@ -16,8 +16,20 @@ class particle:
         self.radius = 10
 
     def update(self):
-        self.centre[0] += round(math.cos(self.direction)*self.speed)
-        self.centre[1] -= round(math.sin(self.direction)*self.speed)
+        if self.centre[1] < self.radius:
+            self.direction = 0-self.direction
+            self.centre[1] = self.radius
+        if self.centre[1] > resolution[1] - self.radius:
+            self.direction = 0-self.direction
+            self.centre[1] = resolution[1] - self.radius
+        if self.centre[0] > resolution[0] - self.radius:
+            self.direction = math.pi - self.direction
+            self.centre[0] = resolution[0] - self.radius
+        if self.centre[0] < self.radius:
+            self.direction = math.pi -self.direction
+            self.centre[0] = self.radius
+        self.centre[0] += math.cos(self.direction)*self.speed
+        self.centre[1] -= math.sin(self.direction)*self.speed
         pygame.draw.circle(screen, (0,0,0), self.centre, self.radius)
 
 class exitbutton:
@@ -52,7 +64,9 @@ screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Particle Pressure Simulation')
 
 button = exitbutton()
-ball = particle()
+objectlist = []
+for i in range(100):
+    objectlist.append(particle())
 
 #main loop
 running = True
@@ -64,7 +78,8 @@ while running:
 
     screen.fill((255,255,255))
 
-    ball.update()
+    for obj in objectlist:
+        obj.update()
 
     running = button.update()
 
