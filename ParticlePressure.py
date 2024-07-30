@@ -118,9 +118,23 @@ while running:
     screen.fill((255,255,255))
 
     for i in range(100):
-        objectlist[i].update()
-        if len(objectlist[i].hitbox.collidelistall(objectlist)) > 1:
-            objectlist[i].direction = math.radians(random.randint(-180,180))
+        collisionlist = objectlist[i].hitbox.collidelistall(objectlist)
+        if len(collisionlist) > 1:
+            if objectlist[i].hitbox.top > objectlist[collisionlist[1]].hitbox.top and objectlist[i].hitbox.left > objectlist[collisionlist[1]].hitbox.left:
+                objectlist[i].direction = math.radians(random.randint(-90,0))
+                objectlist[collisionlist[1]].direction = math.radians(random.randint(90,180))
+            elif objectlist[i].hitbox.top > objectlist[collisionlist[1]].hitbox.top and objectlist[i].hitbox.left < objectlist[collisionlist[1]].hitbox.left:
+                objectlist[i].direction = math.radians(random.randint(-180,-90))
+                objectlist[collisionlist[1]].direction = math.radians(random.randint(0,90))
+            elif objectlist[i].hitbox.top < objectlist[collisionlist[1]].hitbox.top and objectlist[i].hitbox.left > objectlist[collisionlist[1]].hitbox.left:
+                objectlist[i].direction = math.radians(random.randint(0,90))
+                objectlist[collisionlist[1]].direction = math.radians(random.randint(-180,-90))
+            elif objectlist[i].hitbox.top < objectlist[collisionlist[1]].hitbox.top and objectlist[i].hitbox.left < objectlist[collisionlist[1]].hitbox.left:
+                objectlist[i].direction = math.radians(random.randint(90,180))
+                objectlist[collisionlist[1]].direction = math.radians(random.randint(-90,0))
+            else:
+                pass
+                
 
     container.update()
 
