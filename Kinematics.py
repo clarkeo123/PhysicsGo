@@ -11,11 +11,18 @@ resolution = pygame.display.get_desktop_sizes()[0] #gets the resolution of the d
 class object:
     def __init__(self):
         self.rect = pygame.Rect(resolution[0]//(20/9),resolution[1]//(20/9),resolution[0]//10,resolution[1]//10)
-        self.speed = 10
+        self.weight = 1000
+        self.speed = 0
+        self.thrust = 0
+        self.drag = 0
+        self.dragcoefficient = 10
 
     def update(self):
+        self.drag = self.speed * self.dragcoefficient
+        self.speed += (self.thrust - self.drag)/self.weight
         if self.rect.left > resolution[0]:
             self.rect.left = 0-self.rect.width
+        print(self.speed)
         self.rect.left += self.speed
         pygame.draw.rect(screen,(0,0,0),self.rect)
 
@@ -63,7 +70,8 @@ screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Kinematics Simulation')
 
 block = object()
-thrustslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/9),0,25)
+thrustslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/9),0,200)
+weightslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/8),500,2000)
 
 #main loop
 running = True
@@ -75,7 +83,8 @@ while running:
 
     screen.fill((255,255,255))
 
-    block.speed = thrustslider.update()
+    block.thrust = thrustslider.update()
+    block.weight = weightslider.update()
     block.update()
 
     pygame.display.update()
