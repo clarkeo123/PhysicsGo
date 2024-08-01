@@ -185,6 +185,11 @@ while running:
                 objectlist[collisionlist[1]].direction = math.radians(random.randint(-90,0))
             else:
                 pass
+
+    if container.hovered or speedslider.hovered:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 
     if n % 60 == 0:
         collisiondisplay, collisioncounter = collisioncounter, 0
