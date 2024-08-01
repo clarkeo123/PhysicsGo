@@ -14,6 +14,8 @@ class object:
         self.speed = 10
 
     def update(self):
+        if self.rect.left > resolution[0]:
+            self.rect.left = 0-self.rect.width
         self.rect.left += self.speed
         pygame.draw.rect(screen,(0,0,0),self.rect)
 
