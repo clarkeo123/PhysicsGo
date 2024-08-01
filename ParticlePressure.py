@@ -167,6 +167,7 @@ while running:
 
     screen.fill((255,255,255))
 
+    #calculates collisions
     for i in range(100):
         collisioncounter += objectlist[i].update()
         collisionlist = objectlist[i].hitbox.collidelistall(objectlist)
@@ -186,6 +187,7 @@ while running:
             else:
                 pass
 
+    #determines mouse appearance
     if container.hovered or speedslider.hovered:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
     else:
@@ -195,9 +197,11 @@ while running:
         collisiondisplay, collisioncounter = collisioncounter, 0
     n += 1
 
+    #writes pressure and particle speed labels
     writetext(f"Pressure: {collisiondisplay}", 50, resolution[0]//2, resolution[1]//20)
     writetext(f"Particle Speed: {particlespeed}", 32, resolution[0]//2, resolution[1]//(10/9))
 
+    #updates objects
     container.update()
     particlespeed = speedslider.update()
     running = button.update()
