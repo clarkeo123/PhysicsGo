@@ -22,7 +22,6 @@ class object:
         self.speed += (self.thrust - self.drag)/self.weight
         if self.rect.left > resolution[0]:
             self.rect.left = 0-self.rect.width
-        print(self.speed)
         self.rect.left += self.speed
         pygame.draw.rect(screen,(0,0,0),self.rect)
 
@@ -64,6 +63,15 @@ class slider:
             self.sliderx = self.endx
         #calculates the value which the slider is on based on its position, length and chosen start and end values
         return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
+    
+class forcearrow:
+    def __init__(self):
+        self.height = resolution[1]//2
+        self.trianglesize = resolution[1]//20
+
+    def update(self,length,pos,multiplier):
+        pygame.draw.line(screen,(0,0,0),[pos,self.height],[pos+length,self.height],5)
+        pygame.draw.polygon(screen,(0,0,0),[[pos+length,self.height+self.trianglesize],[pos+length,self.height-self.trianglesize],[pos+length+(self.trianglesize*multiplier),self.height]])
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
@@ -72,6 +80,8 @@ pygame.display.set_caption('Kinematics Simulation')
 block = object()
 thrustslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/9),0,200)
 weightslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/8),500,2000)
+thrustarrow = forcearrow()
+dragarrow = forcearrow()
 
 #main loop
 running = True
@@ -86,6 +96,9 @@ while running:
     block.thrust = thrustslider.update()
     block.weight = weightslider.update()
     block.update()
+
+    thrustarrow.update(block.thrust,block.rect.right,1)
+    dragarrow.update((block.drag*(-1)),block.rect.left,-1)
 
     pygame.display.update()
     clock.tick(60)
