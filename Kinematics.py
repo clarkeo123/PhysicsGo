@@ -64,6 +64,30 @@ class slider:
         #calculates the value which the slider is on based on its position, length and chosen start and end values
         return round((((self.sliderx-self.startx)/(self.endx-self.startx))*(self.endvalue-self.startvalue))+self.startvalue)
     
+class exitbutton:
+    def __init__(self):
+        #initial attributes
+        self.hovered = False
+        self.xpos = resolution[0]-(resolution[0]//26)
+        self.ypos = resolution[1]//14
+        self.fontsize = 50
+        self.writex = resolution[0]-(resolution[0]//50)
+        self.writey = resolution[0]//50
+
+    def update(self):
+        #draws cross sign
+        writetext("X",self.fontsize,self.writex,self.writey)
+        #checks for hovers and clicks
+        mousepos = pygame.mouse.get_pos()
+        if mousepos[0] > self.xpos and mousepos[1] < self.ypos:
+            self.hovered = True
+        else:
+            self.hovered = False
+        if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
+            #returns if it is clicked or not
+            return False
+        return True
+
 class forcearrow:
     def __init__(self):
         self.height = resolution[1]//2
@@ -72,6 +96,13 @@ class forcearrow:
     def update(self,length,pos,multiplier):
         pygame.draw.line(screen,(0,0,0),[pos,self.height],[pos+length,self.height],5)
         pygame.draw.polygon(screen,(0,0,0),[[pos+length,self.height+self.trianglesize],[pos+length,self.height-self.trianglesize],[pos+length+(self.trianglesize*multiplier),self.height]])
+
+def writetext(text,size,x,y):
+    #takes a text input and position and size arguments to render text on the screen
+    font = pygame.font.Font('freesansbold.ttf', size)
+    textRect = font.render(text, True, (0,0,0)).get_rect()
+    textRect.center = (x, y)
+    screen.blit(font.render(text, True, (0,0,0)), textRect)
 
 #fullscreens the pygame window and gives it a title
 screen = pygame.display.set_mode(resolution)
@@ -82,6 +113,7 @@ thrustslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/9
 weightslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/8),500,2000)
 thrustarrow = forcearrow()
 dragarrow = forcearrow()
+button = exitbutton()
 
 #main loop
 running = True
@@ -99,6 +131,8 @@ while running:
 
     thrustarrow.update(block.thrust,block.rect.right,1)
     dragarrow.update((block.drag*(-1)),block.rect.left,-1)
+
+    running = button.update()
 
     pygame.display.update()
     clock.tick(60)
