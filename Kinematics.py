@@ -132,6 +132,11 @@ while running:
     thrustarrow.update(block.thrust,block.rect.right,1)
     dragarrow.update((block.drag*(-1)),block.rect.left,-1)
 
+    writetext(f"Speed: {round(block.speed,1)}",64,resolution[0]//2,resolution[1]//10)
+    writetext(f"Weight: {block.weight}",64,resolution[0]//2,resolution[1]//(10/2))
+    writetext(f"Thrust: {block.thrust}",32,block.rect.right+block.thrust,resolution[1]//(5/2))
+    writetext(f"Drag: {round(block.drag)}",32,block.rect.left-block.drag,resolution[1]//(5/2))
+
     running = button.update()
 
     pygame.display.update()
