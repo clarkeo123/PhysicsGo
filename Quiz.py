@@ -16,8 +16,14 @@ def endoftest():
 
 
 def checkanswer():
-    global questioncounter
+    global questioncounter, score
     if questioncounter < len(data)-1:
+        if answerbox.value.lower() == data[questioncounter]["answer"].lower():
+            score += 1
+            answerresponse.value = "Correct!"
+        else:
+            answerresponse.value = ("Incorrect, the answer is:",data[questioncounter]['answer'])
+        answerbox.value = ""
         questioncounter += 1
         title.value = f"Question {questioncounter+1}"
         question.value = data[questioncounter]["question"]
@@ -32,5 +38,7 @@ filler2 = Text(app,text="",size=32)
 answerbox = TextBox(app, width=32)
 filler3 = Text(app,text="",size=32)
 submitbutton = PushButton(app, text="Submit", command=checkanswer)
+filler4 = Text(app,text="",size=32)
+answerresponse = Text(app, text="", size=32)
 
 app.display()
