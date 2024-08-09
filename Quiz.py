@@ -17,12 +17,12 @@ def endoftest():
 
 def checkanswer():
     global questioncounter, score
+    if answerbox.value.lower() == data[questioncounter]["answer"].lower():
+        score += 1
+        answerresponse.value = "Correct!"
+    else:
+        answerresponse.value = (f"Incorrect, the answer is: {data[questioncounter]['answer']}")
     if questioncounter < len(data)-1:
-        if answerbox.value.lower() == data[questioncounter]["answer"].lower():
-            score += 1
-            answerresponse.value = "Correct!"
-        else:
-            answerresponse.value = ("Incorrect, the answer is:",data[questioncounter]['answer'])
         answerbox.value = ""
         questioncounter += 1
         title.value = f"Question {questioncounter+1}"
