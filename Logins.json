@@ -1,0 +1,12 @@
+{
+    "Credentials": [
+        {
+            "Username": "Teacher",
+            "Password": "SuperMegaSecure123"
+        },
+        {
+            "Username": "Student",
+            "Password": "SuperSecure123"
+        }
+    ]
+}
