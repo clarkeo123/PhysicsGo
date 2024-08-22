@@ -9,6 +9,7 @@ data = json.load(file)["Doppler Effect Quiz"]
 questioncounter = 0
 score = 0
 app = App(title="Physics Quiz")
+app.set_full_screen()
 
 def endoftest():
     #displays the score, removes most elements and changest the submit button to an exit button
