@@ -1,5 +1,6 @@
 from guizero import *
 import json
+import subprocess
 
 file = open("Logins.json")
 data = json.load(file)["Credentials"]
@@ -12,6 +13,15 @@ def backtologin(currentwindow):
     currentwindow.destroy()
     useraccess = ""
     loginscreen()
+
+def runprogram(currentwindow,program):
+    currentwindow.destroy()
+    subprocess.run(['python',program])
+    menu()
+
+def runquiz(currentwindow, quiz):
+    import Quiz
+    Quiz.main(quiz, app)
 
 def loginchecker(username, password):
     global useraccess
@@ -50,12 +60,12 @@ def menu():
     menuwindow.set_full_screen()
     title = Text(menuwindow, text="Please choose an option:", size=32)
     fillertexta = Text(menuwindow, text="")
-    doppleroption = PushButton(menuwindow, text="Doppler Effect Simulation")
-    dopplerquizoption = PushButton(menuwindow, text="Doppler Effect Quiz")
-    pressureoption = PushButton(menuwindow, text="Pressure Simulation")
-    pressurequizoption = PushButton(menuwindow, text="Pressure Quiz")
-    kinematicsoption = PushButton(menuwindow, text="Kinematics Simulation")
-    kinematicsquizoption = PushButton(menuwindow, text="Kinematics Quiz")
+    doppleroption = PushButton(menuwindow, text="Doppler Effect Simulation", command=runprogram, args=[menuwindow,"DopplerEffect.py"])
+    dopplerquizoption = PushButton(menuwindow, text="Doppler Effect Quiz", command=runquiz, args=[menuwindow, "Doppler Effect Quiz"])
+    pressureoption = PushButton(menuwindow, text="Pressure Simulation", command=runprogram, args=[menuwindow,"ParticlePressure.py"])
+    pressurequizoption = PushButton(menuwindow, text="Pressure Quiz", command=runquiz, args=[menuwindow, "Pressure Quiz"])
+    kinematicsoption = PushButton(menuwindow, text="Kinematics Simulation", command=runprogram, args=[menuwindow,"Kinematics.py"])
+    kinematicsquizoption = PushButton(menuwindow, text="Kinematics Quiz", command=runquiz, args=[menuwindow, "Kinematics Quiz"])
     fillertextb = Text(menuwindow, text="")
     logout = PushButton(menuwindow, text="Log Out", command=backtologin, args=[menuwindow])
 
