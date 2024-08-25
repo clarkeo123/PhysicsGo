@@ -1,23 +1,13 @@
 from guizero import *
 import json
 
-#loads the json file with the questions and answers
-file = open("QuizAnswers.json")
-data = json.load(file)["Doppler Effect Quiz"]
-
-#initialises the key variables
-questioncounter = 0
-score = 0
-app = App(title="Physics Quiz")
-app.set_full_screen()
-
 def endoftest():
     #displays the score, removes most elements and changest the submit button to an exit button
     title.value = f"Score: {score}/{len(data)}"
     question.visible = False
     answerbox.visible = False
     submitbutton.text= "Exit"
-    submitbutton._command = quit
+    submitbutton._command = quizwindow.destroy
 
 
 def checkanswer():
@@ -39,17 +29,26 @@ def checkanswer():
     else:
         #triggers the end of the quiz
         endoftest()
-        
-#intialises all the interactive and text elements in order
-title = Text(app, text=f"Question {questioncounter+1}", size=64)
-filler1 = Text(app,text="",size=32)
-question = Text(app, text=data[questioncounter]["question"], size=32)
-filler2 = Text(app,text="",size=32)
-answerbox = TextBox(app, width=32)
-filler3 = Text(app,text="",size=32)
-submitbutton = PushButton(app, text="Submit", command=checkanswer)
-filler4 = Text(app,text="",size=32)
-answerresponse = Text(app, text="", size=32)
 
-#updates the screen
-app.display()
+def main(quizname, master):   
+    global answerbox, answerresponse, title, data, submitbutton, questioncounter, score, question, quizwindow
+    #loads the json file with the questions and answers
+    file = open("QuizAnswers.json")
+    data = json.load(file)[quizname]
+
+    #initialises the key variables
+    questioncounter = 0
+    score = 0
+    quizwindow = Window(master, title="Physics Quiz")
+    quizwindow.set_full_screen()
+
+    #intialises all the interactive and text elements in order
+    title = Text(quizwindow, text=f"Question {questioncounter+1}", size=64)
+    filler1 = Text(quizwindow,text="",size=32)
+    question = Text(quizwindow, text=data[questioncounter]["question"], size=32)
+    filler2 = Text(quizwindow,text="",size=32)
+    answerbox = TextBox(quizwindow, width=32)
+    filler3 = Text(quizwindow,text="",size=32)
+    submitbutton = PushButton(quizwindow, text="Submit", command=checkanswer)
+    filler4 = Text(quizwindow,text="",size=32)
+    answerresponse = Text(quizwindow, text="", size=32)
