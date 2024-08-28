@@ -137,6 +137,12 @@ while running:
     writetext(f"Thrust: {block.thrust}",32,block.rect.right+block.thrust,resolution[1]//(5/2))
     writetext(f"Drag: {round(block.drag)}",32,block.rect.left-block.drag,resolution[1]//(5/2))
 
+    #checks if sliders are being hovered over and changes the cursor to a hand if they are
+    if thrustslider.hovered or weightslider.hovered or button.hovered:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
     running = button.update()
 
     pygame.display.update()
