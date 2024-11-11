@@ -189,7 +189,7 @@ while running:
                 pass
 
     #determines mouse appearance
-    if container.hovered or speedslider.hovered:
+    if container.hovered or speedslider.hovered or button.hovered:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
     else:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
