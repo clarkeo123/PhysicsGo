@@ -46,7 +46,7 @@ class source:
             self.direction = 180
         elif keys[pygame.K_RIGHT]:
             self.direction = 0
-        if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
+        if (keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]) and not((keys[pygame.K_UP] and keys[pygame.K_DOWN]) or (keys[pygame.K_LEFT] and keys[pygame.K_RIGHT])):
             self.speed = sourcespeed
         else:
             self.speed = 0
