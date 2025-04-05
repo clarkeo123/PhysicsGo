@@ -114,7 +114,7 @@ class exitbutton:
         self.writey = resolution[0]//50
 
     def update(self):
-        writetext("X",self.fontsize,self.writex,self.writey)
+        writetext("X",self.fontsize,self.writex,self.writey) #draws an x in the top right corner of the screen
         mousepos = pygame.mouse.get_pos()
         if mousepos[0] > self.xpos and mousepos[1] < self.ypos:
             self.hovered = True
@@ -123,6 +123,7 @@ class exitbutton:
         if self.hovered and pygame.mouse.get_pressed(num_buttons=3)[0]:
             return False
         return True
+        #checks if the user is hovering over and/or clicking on the button
     
 def writetext(text,size,x,y):
     #takes a text input and position and size arguments to render text on the screen
