@@ -18,10 +18,12 @@ class object:
         self.dragcoefficient = 10
 
     def update(self):
+        #calculates the drag and resultant speed acting on the object
         self.drag = self.speed * self.dragcoefficient
         self.speed += (self.thrust - self.drag)/self.weight
-        if self.rect.left > resolution[0]:
-            self.rect.left = 0-self.rect.width
+        #checks if the object has left the screen
+        if self.rect.left - self.drag - dragarrow.trianglesize > resolution[0]:
+            self.rect.left = 0-self.rect.width-self.thrust-thrustarrow.trianglesize
         self.rect.left += self.speed
         pygame.draw.rect(screen,(0,0,0),self.rect)
 
@@ -94,6 +96,7 @@ class forcearrow:
         self.trianglesize = resolution[1]//20
 
     def update(self,length,pos,multiplier):
+        #displays a line attached to the object with length representing force/drag
         pygame.draw.line(screen,(0,0,0),[pos,self.height],[pos+length,self.height],5)
         pygame.draw.polygon(screen,(0,0,0),[[pos+length,self.height+self.trianglesize],[pos+length,self.height-self.trianglesize],[pos+length+(self.trianglesize*multiplier),self.height]])
 
@@ -108,6 +111,7 @@ def writetext(text,size,x,y):
 screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Kinematics Simulation')
 
+#initialises all objects
 block = object()
 thrustslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/9),0,200)
 weightslider = slider(resolution[0]//5,resolution[0]//(5/4),resolution[1]//(10/8),500,2000)
@@ -124,14 +128,14 @@ while running:
             running = False
 
     screen.fill((255,255,255))
-
+    #gets thrust and weight values from the sliders
     block.thrust = thrustslider.update()
     block.weight = weightslider.update()
     block.update()
-
+    #updates force arrows
     thrustarrow.update(block.thrust,block.rect.right,1)
     dragarrow.update((block.drag*(-1)),block.rect.left,-1)
-
+    #displays labels for all key values
     writetext(f"Speed: {round(block.speed,1)}",64,resolution[0]//2,resolution[1]//10)
     writetext(f"Weight: {block.weight}",64,resolution[0]//2,resolution[1]//(10/2))
     writetext(f"Thrust: {block.thrust}",32,block.rect.right+block.thrust,resolution[1]//(5/2))
@@ -142,7 +146,7 @@ while running:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
     else:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-
+    #checks if the program should close
     running = button.update()
 
     pygame.display.update()

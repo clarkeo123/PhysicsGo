@@ -24,6 +24,7 @@ class particle:
             value = 1
         else:
             value = 0
+        #determines new direction after a collision
         if self.centre[1] < container.rect.top + self.radius:
             self.direction = 0-self.direction
             self.centre[1] = container.rect.top + self.radius
@@ -147,6 +148,7 @@ def writetext(text,size,x,y):
 screen = pygame.display.set_mode(resolution)
 pygame.display.set_caption('Particle Pressure Simulation')
 
+#initialises all key objects and variables
 button = exitbutton()
 container = box()
 objectlist = []
